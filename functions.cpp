@@ -110,6 +110,10 @@ bool compareFiles(boost::filesystem::path &path_file1,
 
   while (true) {
     bytes_read1 = file1.read(buffer1.data(), buffer1.size());
+    bytes_read2 = file2.read(buffer2.data(), buffer2.size());
+
+    if (bytes_read1 != bytes_read2) return false;
+
     if (bytes_read1 <= 0)
       break;
     // заполнение нулями
@@ -118,7 +122,6 @@ bool compareFiles(boost::filesystem::path &path_file1,
       bytes_read1++;
     }
 
-    bytes_read2 = file2.read(buffer2.data(), buffer2.size());
     if (bytes_read2 <= 0)
       break;
     // заполнение нулями

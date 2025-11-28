@@ -1,4 +1,5 @@
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/program_options.hpp>
 
 #include <iostream>
@@ -64,7 +65,7 @@ int main(int argc, char **argv) {
   files = fillingVector(config);
 
   for (size_t i = 0; i < files.size(); ++i) {
-    std::string str = files[i].string() + "\n";
+    std::string str = boost::filesystem::absolute(files[i]).lexically_normal().string() + "\n";
     int count_compare = 0;
 
     auto it = std::find(touch_files.begin(), touch_files.end(), files[i]);
@@ -79,7 +80,7 @@ int main(int argc, char **argv) {
 
       bool result = compareFiles(files[i], files[j], block_size, hash);
       if (result) {
-        str += files[j].string() + "\n";
+        str += boost::filesystem::absolute(files[j]).lexically_normal().string() + "\n";
         touch_files.push_back(files[j]);
         count_compare++;
       }
